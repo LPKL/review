@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let arp = [9,82,17,26,5,422,32,22,1]
+    function heapRange(arg) {
+        function maxHeap(arr) {
+            let arr1 = []
+            arr1[0] = 0
+            for (let i=arr.length-1; i>=0;i--){
+                insert(arr1, arr[i] )
+            }
+            return arr1
+        }
+        function insert(arr, value){
+            arr[arr[0]+1] = value
+            arr[0]++
+            shiftUp(arr, arr[0])
+        }
+        function shiftUp(arr, index) {
+            while(index>1&&arr[Math.floor(index/2)]<arr[index]){
+                [arr[Math.floor(index/2)], arr[index]] = [arr[index], arr[Math.floor(index/2)]]
+                index=Math.floor(index/2)
+            }
+        }
+        let p = maxHeap(arg)
+        debugger
+// 从堆中取出位置n上的元素，并将最后一个元素凡在该位置，然后对该堆进行处理
+        function getOut(arr, n) {
+            let temp = arr[n];
+            [arr[n], arr[arr[0]]] = [arr[arr[0]], arr[n]]
+            arr.length--
+            debugger
+            arr[0]--
+            shiftDown(arr, n)
+            return temp
+        }
+        function shiftDown(arr, k) {
+            while(2*k<=arr[0]){
+                let j = 2*k
+                if (j+1<=arr[0]&&arr[j]<arr[j+1])j+=1;
+                if (arr[k]>=arr[j])break;
+                [arr[k], arr[j]] = [arr[j], arr[k]]
+                k=j
+            }
+        }
+        let ary = []
+        debugger
+        while(arg[0]>0){
+            ary.unshift(getOut(p, 1))
+            arg[0]--
+        }
+        return ary
+    }
+    console.log(heapRange(arp));
+</script>
+</body>
+</html>

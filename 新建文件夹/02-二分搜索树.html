@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    function binarySearch() {
+
+    }
+    // 往树中插入元素
+    function insert(obj, key, value) {
+
+    }
+    function insertfunc(obj, key, value) {
+        if (JSON.stringify(obj) === '{}'){
+            obj['key'] = key;
+            obj['value'] = value
+            obj['left'] = {}
+            obj['right'] = {}
+            return obj
+        }
+        if (obj['key'] === key) {
+            obj['key'] = value;
+        } else if (obj['value'] < value) {
+            insertfunc(obj.right, key, value)
+        } else if (obj['value'] > value) {
+            insertfunc(obj.left, key, value)
+        }
+        return obj
+    }
+    function contains (obj, value) {
+        if (JSON.stringify(obj) === '{}') {
+            return false
+        }
+        if (obj['value'] === value) {
+            return true
+        } else if (obj['value'] < value) {
+            return contains(obj.right, value)
+        } else if (obj['value'] > value) {
+            return contains(obj.left, value)
+        }
+    };
+    // 层序遍历
+    function leverOrder(obj) {
+        let arr = [];
+        arr.push(obj);
+        while(arr.length) {
+            let p = arr.shift();
+            if (p.value)console.log(p.value);
+            if (p.left)arr.push(p.left);
+            if (p.right)arr.push(p.right);
+        }
+    }
+    // 寻找最小节点
+    function findMin(obj) {
+        if (JSON.stringify(obj) === '{}')return;
+        return minmum(obj)
+    }
+    function minmum(obj) {
+        if (JSON.stringify(obj.left) === '{}') return obj.value;
+        return minmum(obj.left)
+    }
+    // 寻找最大节点
+    function findMax(obj) {
+        if (JSON.stringify(obj) === '{}') return;
+        return maxmum(obj)
+    }
+    function maxmum(obj){
+       if (JSON.stringify(obj.right) === '{}') return obj.value;
+       return maxmum(obj.right)
+    }
+    // 删除最小
+    function removeMin(obj){
+        if (JSON.stringify(obj) === '{}') return;
+        if (JSON.stringify(obj.left) === '{}') return obj = obj.right;
+        let temp = deleteMin(obj)
+        let leftObj = obj.left;
+        while (leftObj){
+            if (leftObj.left){
+                if (leftObj.left.key === temp){
+                   return delete leftObj.left
+                }
+            }
+            leftObj = leftObj.left
+        }
+    }
+    function deleteMin(obj) {
+        if (JSON.stringify(obj.left) === '{}'){
+            if (JSON.stringify(obj.right) !== '{}'){
+                obj = obj.right
+            } else {
+                return obj.key
+            }
+        }
+        return deleteMin(obj.left)
+    }
+    // 删除最大节点
+    function removeMax(obj) {
+        debugger
+        if (JSON.stringify(obj) === '{}') return;
+        if (JSON.stringify(obj.right) === '{}') return obj = obj.left;
+        let temp = deleteMax(obj)
+        let rightObj = obj.right
+        while (rightObj) {
+            if (rightObj.right){
+                if (rightObj.right.key === temp) {
+                    return delete rightObj.right
+                }
+            }
+            rightObj = rightObj.right
+        }
+    }
+    function deleteMax(obj) {
+        debugger
+        if (JSON.stringify(obj.right) === '{}'){
+            if (JSON.stringify(obj.left) !== '{}'){
+                obj = obj.left
+            } else {
+                return obj.key
+            }
+        }
+        return deleteMax(obj.right)
+    }
+    // 删除一个节点
+    function remove(obj, value) {
+        debugger
+        if (JSON.stringify(obj) === '{}') return false;
+        if (obj.value > value){
+            // 当value值小于当前值的时候，此时在左孩子内查找
+            if (JSON.stringify(obj.left) !== '{}'){
+                return remove(obj.left, value)
+            } else {
+                return false
+            }
+        } else if (obj.value < value) {
+            // 当value值大于当前值的时候，此时在右孩子内查找
+            if (JSON.stringify((obj.right) !== '{}')) {
+                return remove(obj.right, value)
+            } else {
+                return false
+            }
+        } else {
+            // 当value值跟当前值相等的时候,此时要根据当前元素左右孩子是否存在来判断
+            if (JSON.stringify(obj.left) !== '{}'&&JSON.stringify(obj.right) === '{}'){
+               // 当左孩子存在,右孩子不存在的时候
+               //  因为当前元素是大于左孩子的所有元素,所以直接覆盖
+                let p = JSON.parse(JSON.stringify(obj.left));
+                for (let key in obj){
+                    obj[key] = p[key]
+                }
+                return;
+            } else if (JSON.stringify(obj.left) === '{}'&&JSON.stringify(obj.right) !== '{}'){
+                // 当右孩子存在,左孩子不存在的时候,此时当前元素都小于右孩子的所值,所以,直接覆盖
+                let p = JSON.parse(JSON.stringify(obj.right))
+                for(let key in obj){
+                    obj[key] = p[key]
+                }
+               return;
+            } else {
+                let temp = obj.right.left;
+                // 用来存储最小值的那个元素
+                let p = {};
+                while(JSON.stringify(temp)!== '{}'){
+                    if (JSON.stringify(temp.left) === '{}') {
+                        // 说明当前是最小值,不再有下一级的左子树
+                        // 将右孩子中的最小的那个节点删除
+                        p = JSON.parse(JSON.stringify(temp))
+                        break;
+                    }
+                    temp = temp.left
+                }
+                // 将右子树最小的那个节点删除
+                let dTemp = obj.right;
+                while(JSON.stringify(dTemp.left)!=='{}'){
+                    if (dTemp.left.key === p.key){
+                        delete dTemp.left;
+                        break;
+                    }
+                    dTemp.left = dTemp.left.left
+                }
+                // 将最小的节点替换当前要删除的节点,即用刚刚复制的p来做相应的操作
+                p.left = obj.left;
+                p.right = obj.right;
+                for (let key in obj){
+                    obj[key] = p[key]
+                }
+            }
+        }
+    }
+    let data = {
+        '1a1':11,
+        '1':99,
+        'c2':88,
+        '2':22,
+        'e':77,
+        '3':33,
+        'g':66,
+        '4':44,
+        'i':55
+    }
+    let o = {}
+    for (let key in data) {
+        insertfunc(o, key, data[key])
+    }
+    // console.log(o)
+    // leverOrder(o)
+    // console.log(contains(o, 663));
+    // console.log(findMin(o));
+    // console.log(findMax(o));
+    // console.log(removeMin(o));
+    // console.log(removeMax(o));
+    remove(o, 88)
+    console.log(o)
+</script>
+</body>
+</html>

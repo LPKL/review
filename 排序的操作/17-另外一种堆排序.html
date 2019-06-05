@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function shiftDown(arr, k) {
+        while(2*k<=arr[0]){
+            let j = 2*k
+            if (j+1<=arr[0]&&arr[j]<arr[j+1])j+=1;
+            if (arr[k]>=arr[j])break;
+            [arr[k], arr[j]] = [arr[j], arr[k]]
+            k=j
+        }
+    }
+    function getOut(arr, n) {
+        let temp = arr[n];
+        [arr[n], arr[arr[0]]] = [arr[arr[0]], arr[n]]
+        arr.length--
+        arr[0]--
+        shiftDown(arr, n)
+        return temp
+    }
+    function heapRange(arg){
+        let arr = []
+        arr[0] = 0
+        for (let i = 0; i < arg.length; i++) {
+            arr[i+1] = arg[i]
+            arr[0] = arg.length
+        }
+        for (let j=Math.floor(arr[0]/2); j>=1; j--){
+            shiftDown(arr[j])
+        }
+        debugger
+        let ary = []
+        while(arr[0]>0){
+            ary.unshift(getOut(arr, 1))
+            // arr[0]--
+        }
+        return ary
+    }
+    let p = [9,8,7,6,5]
+    console.log(heapRange(p));
+</script>
+</body>
+</html>

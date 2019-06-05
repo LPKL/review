@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let arg = [9,8,7,6,5,4,3,2,1]
+    function range(arr, l, r) {
+        if (l>=r)return
+        let midIndex = quickSort(arr, l, r)
+        range(arr, l, midIndex-1)
+        range(arr, midIndex+1, r)
+    }
+    function quickSort(arr, l, r) {
+        let temp = Math.floor(Math.random()*(r-l+1)+l);
+        [arr[l], arr[temp]] = [arr[temp],arr[l]]
+        let midValue = arr[l];
+        // 从前往后
+        let i = l + 1;
+        // 从后往前
+        let j = r;
+        while(true){
+            // 在满足i<=r的条件下，大于midValue的值
+            while(i<=r&&arr[i]<midValue)i++;
+            // 在满足j>=l+1的条件下，小于midValue的值
+            while(j>=l+1&&arr[j]>midValue)j--;
+            // 只有当以上两个while循环结束，才会走下面
+            if(i > j)break;
+            // 将大于midValue和小于midValue值进行调换位置
+            [arr[i], arr[j]] = [arr[j], arr[i]]
+            // 维护i，j
+            i++;
+            j--;
+        }
+        // 当跳出循环的时候，此时j位置上的元素是最后一个小于midValue的元素
+        [arr[l], arr[j]] = [arr[j], arr[l]]
+        // 此时返回的就是中间值的位置
+        return j
+    }
+    range(arg, 0, arg.length-1)
+    console.log(arg)
+</script>
+</body>
+</html>

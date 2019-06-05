@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 索引堆
+    // 一个数组中存放的是当前要操作的元素dataArr,另一个数组中存放的是dataArr内元素对应的索引indexArr
+    // 那么在堆dataArr进行最大堆操作的时候，此时操作的是indexArr，不会直接操作dataArr，只改变它的索引即可
+
+    function indexMaxHeap(arr) {
+        let data = []
+        let index = []
+        for (let i = 0; i < arr.length; i++) {
+            insert([data, index], i, arr[i])
+        }
+        return [data, index]
+    }
+    function insert(all, index, value ) {
+        let dataArr = all[0];
+        let indexArr = all[1];
+        dataArr[index] = value;
+        indexArr[index] = index;
+        shiftUp(all, index)
+    }
+    // 往堆中塞入元素
+    function shiftUp(all, num) {
+        let dArr = all[0];
+        let iArr = all[1];
+        while(num >=0 && dArr[iArr[Math.floor(num/2)]]<dArr[iArr[num]]){
+            [iArr[Math.floor(num/2)], iArr[num]] = [iArr[num], iArr[Math.floor(num/2)]]
+            num = Math.floor(num/2)
+        }
+    }
+    // 传入的arr要为一个索引堆
+    // 即为一个二维数组
+    // 从数组中取出最大元素
+    function getOutMax(arr) {
+        let len = arr[1].length;
+        if (len <= 0) return;
+        let item = arr[0][arr[1][0]];
+        [arr[1][0], arr[1][arr[1].length-1]] = [arr[1][arr[1].length-1], arr[1][0]];
+        arr[1].length--
+        shiftDown(arr, 0)
+        return item
+    }
+    // 考察对应位置上的元素是否合适
+    function shiftDown(all, num) {
+        let dataArr = all[0];
+        let indexs = all[1];
+        let len = indexs.length;
+        while(2*num+1 < len){
+            let j = 2*num+1;
+            if (j+1<=len && dataArr[indexs[j]]<dataArr[indexs[j+1]]) j+=1;
+            if (dataArr[indexs[num]] >= dataArr[indexs[j]]) break;
+            [indexs[num], indexs[j]] = [indexs[j], indexs[num]]
+            num = j;
+        }
+    }
+    // 取出最大元素的索引
+    function getOutMaxIndex(arr) {
+        let len = arr[1].length;
+        if (len <= 0) return;
+        let item = arr[1][0];
+        [arr[1][0], arr[1][arr[1].length-1]] = [arr[1][arr[1].length-1], arr[1][0]];
+        arr[1].length--
+        shiftDown(arr, 0)
+        return item
+    }
+    // 替换堆中的某个位置上的元素
+    // 此时的arr为一个二维数组
+    function change(all, num, value){
+        debugger
+        let dataArr = all[0];
+        let indexs = all[1];
+        dataArr[num] = value;
+        for (let j = 0; j < indexs.length; j++) {
+            if(indexs[j] === num){
+                shiftUp(all, j);
+                shiftDown(all, j);
+                break;
+            }
+
+        }
+        return all
+    }
+
+
+
+
+
+
+
+    let arg = [12, 28, 5, 7, 44]
+    let p = indexMaxHeap(arg)
+    // for (let i = 0; i < p[0].length; i++) {
+    //     console.log(getOutMaxIndex(p));
+    // }
+    console.log(change(p, 0, 1000));
+</script>
+</body>
+</html>

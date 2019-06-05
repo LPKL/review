@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    let arg = [9,8,7,6,5,4,3,2,1]
+    function range(arr, l, r) {
+        // l,r是排序的区间范围
+        if (l >= r)return
+        // 返回中间值的位置
+        let midIndex = quickSort(arr, l, r)
+        // 分别对中间值的左右两侧进行递归
+        range(arr, l, midIndex-1)
+        range(arr, midIndex+1, r)
+    }
+    function quickSort(arr, l, r) {
+        // debugger
+        // j用来记录分界点的位置,即最后定位到的
+        let j = l
+        // let midValue = arr[l]
+        // 选取一个随机位置来作为中间值
+        let temp = Math.floor(Math.random()*(r-l+1) +l);
+        // console.log(temp);
+        // 不加分毫会导致报错
+            // 寻找到该元素之后，让它跟最左侧的元素交换一下位置，继续之前的比较操作
+        [arr[l], arr[temp]] = [arr[temp],arr[l]]
+        // const t = arr[l] + arr[temp]
+        // arr[l] = t - arr[l]
+        // arr[temp] = t-arr[l]
+        let midValue = arr[l]
+        for (let i = l+1; i <=r; i++) {
+            if (arr[i] < midValue){
+                [arr[j+1], arr[i]] = [arr[i],arr[j+1]]
+                j++
+            }
+        }
+        // 循环结束，将目前在中间的那个值，跟中间值进行交换位置
+        // 此时j对应的位置上的元素的值是小于当前选定的这个midValue
+        // 这样中间值左侧的都小于它，右侧的都大于它
+        [arr[l],arr[j]] = [arr[j],arr[l]]
+        return j
+    }
+    range(arg,0,arg.length-1)
+    console.log(arg)
+</script>
+</body>
+</html>

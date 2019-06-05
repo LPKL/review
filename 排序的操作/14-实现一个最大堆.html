@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // 向队列中添入一个元素
+    // （最大堆中）在往堆内新添加元素的时候，拿当前元素跟它的父节点比较，
+    // 如果大于父节点，则交换位置（父节点索引为i的话，那么左边孩子的索引为2i（此时根节点位置是从1开始），
+    // 右边孩子的索引为2i+1
+    // 往数组随机插入10个数，形成最大堆
+    // 为了使得插入位置的索引满足上述条件，从第二项开始插入，第一项记录插入的位子
+    function maxHeap(arr, n) {
+        arr[0] = 0
+        for (let i=0; i<n;i++){
+            insert(arr, Math.floor(Math.random()*Math.random()*100+1))
+        }
+    }
+    function insert(arr, value){
+        arr[arr[0]+1] = value
+        arr[0]++
+        shiftUp(arr, arr[0])
+    }
+    function shiftUp(arr, index) {
+        // 当前位置的元素跟父元素进行比较
+        while(index>1&&arr[Math.floor(index/2)]<arr[index]){
+            // 如果父元素小于当前元素，此时交换位置
+            [arr[Math.floor(index/2)], arr[index]] = [arr[index], arr[Math.floor(index/2)]]
+            // 并将元素位置的值定位到父元素的位置，继续迭代操作
+            index/=2
+        }
+    }
+    let arg = []
+    maxHeap(arg, 5)
+    console.log(arg)
+</script>
+</body>
+</html>

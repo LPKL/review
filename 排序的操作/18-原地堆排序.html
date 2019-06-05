@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    // 先将数组转化成最大堆当前一个最大堆，第一个元素为最大值，将第一个元素跟最后一个元素交换位置，
+    // 那么最后一个元素几位当前数组中最大的那个元素，然后对前面的部分进行shiftDown，
+    // 将其在转化成一个最大堆，然后再进行上面的操作
+    function heapSort(arr) {
+        let len = arr.length
+        // 从最后一个非叶子节点开始进行
+        // 当前数组是从0开始的
+        for (let i = (len-1)/2; i >= 0; i--) {
+            shiftDown(arr, len, i)
+        }
+        for (let j = len-1; j > 0; j--){
+            [arr[0], arr[j]] = [arr[j], arr[0]]
+            // 因为从一开始就将第一个元素抛除，所以长度要减一
+            shiftDown(arr, j, 0)
+        }
+    }
+    function shiftDown(arr, len, index) {
+        // 左孩子存在的时候
+        while((2*index+1) < len){
+            let i = 2*index+1
+            // 右孩子存在，并且大于左孩子
+            if (i + 1 < len && arr[i] < arr[i+1]) i+=1;
+            if (arr[index] >= arr[i]) break;
+            [arr[index], arr[i]] = [arr[i], arr[index]]
+            // 当前要考虑的位置
+            index = i
+        }
+    }
+    let arr = [5, 4, 3, 2, 1, 6, 7, 8, 9]
+    heapSort(arr)
+    console.log(arr)
+</script>
+</body>
+</html>

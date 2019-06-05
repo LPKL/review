@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // 从某一位置取出一个元素，然后将二叉树的最后一个元素放在该位置
+    // 然后拿当前该位置的元素的值跟它的左右孩子比较，如果左右孩子中较大的那个孩子比他大，那么，交换
+    // 他俩的位置即可，然后调整位置，继续比较
+    // 先生成一个堆
+    function maxHeap(arr, n) {
+        arr[0] = 0
+        for (let i=0; i<n;i++){
+            insert(arr, Math.floor(Math.random()*Math.random()*100+1))
+        }
+    }
+    function insert(arr, value){
+        arr[arr[0]+1] = value
+        arr[0]++
+        shiftUp(arr, arr[0])
+    }
+    function shiftUp(arr, index) {
+        while(index>1&&arr[Math.floor(index/2)]<arr[index]){
+            [arr[Math.floor(index/2)], arr[index]] = [arr[index], arr[Math.floor(index/2)]]
+            index=Math.floor(index/2)
+        }
+    }
+    let arg = []
+    maxHeap(arg, 10)
+    console.log(arg)
+    // 从堆中取出位置n上的元素，并将最后一个元素凡在该位置，然后对该堆进行处理
+    function getOut(arr, n) {
+        let temp = arr[n];
+        console.log(temp);
+        [arr[n], arr[arr[0]]] = [arr[arr[0]], arr[n]]
+        arr.length--
+        arr[0]--
+        shiftDown(arr, n)
+        return temp
+    }
+    function shiftDown(arr, k) {
+        while(2*k<=arr[0]){
+            let j = 2*k
+            if (j+1<=arr[0]&&arr[j]<arr[j+1])j+=1;
+            if (arr[k]>=arr[j])break;
+            [arr[k], arr[j]] = [arr[j], arr[k]]
+            k=j
+        }
+    }
+    let ary = []
+    while(arg[0]>0){
+        ary.push(getOut(arg, 1))
+        arg[0]--
+    }
+    console.log(ary,1111)
+</script>
+</body>
+</html>

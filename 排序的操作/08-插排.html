@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<script>
+    // let arg = [9,8,7,6,5,4,3,2,1]
+    let arg = [1,3,4,2]
+    function testS(arr) {
+        for(let i = 0; i< arr.length; i++) {
+            if (arr[i] > arr[i+1]) {
+                console.log('失败了')
+            } else {
+                console.log('成功了')
+            }
+        }
+    }
+    // 基础版
+    // function range(arr) {
+    //     let len = arr.length
+    //     for (let i = 1; i < len; i++) {
+    //         for (let j = i; j > 0; j--) {
+    //             if (arr[j - 1] > arr[j]) {
+    //                 [arr[j - 1], arr[j]] = [arr[j], arr[j - 1]]
+    //             }
+    //         }
+    //     }
+    //     testS(arr)
+    //     console.log(arr)
+    // }
+    // 优化
+    // function range(arr){
+    //     let len = arr.length
+    //     let temp = null
+    //     debugger
+    //     for (let i = 1;i< len; i++) {
+    //         temp = arr[i]
+    //         let j
+    //         for(j = i; j > 0&&temp<arr[j-1]; j--) {
+    // 这样判断的原因：防止j多减一次
+    //             arr[j] = arr[j-1]
+    //         }
+    //         arr[j] = temp
+    //     }
+    //     // testS(arr)
+    //     return arr
+    // }
+    // function insertSort(arr) {
+    //     var len = arr.length;
+    //     var temp;
+    //     for (var i = 1;i < len;i++){
+    //         temp = arr[i]
+    //         for (var j = i;j > 0 && temp < arr[j-1];j--){
+    //             // 当前值和之前的每个值进行比较，发现有比当前值小的值就进行重新赋值
+    //             arr[j] = arr[j-1];
+    //         }
+    //         arr[j] = temp;
+    //     }
+    //     return arr;
+    // }
+    // 对数组的指定位置[l, r]的元素进行插入拍排序：
+    // 外层的for循环用来定位开始比较的那个元素,当前i对应的元素的位置，决定了内层循环的次数
+    // 内层循环从当前定位的元素这开始往前依次比较，如果当前值temp大于它的前一位上的值的话，那么就让
+    // 前一位上的值覆盖当前位置上的值，继续下一次的比较，直到j位置对应的元素或者j的值不符合条件
+    // 将j对应的位置的元素跟当前temp的值交换，结束排序
+    function insertSort(arr, l, r) {
+        let temp = null
+        for (let i = l+1; i <= r; i++) {
+            temp = arr[i]
+            let j
+            for(j = i; j > 0&&temp < arr[j-1]; j--){
+                arr[j] = arr[j-1]
+            }
+            arr[j] = temp
+        }
+        return arr
+    }
+    console.log(insertSort(arg,0,arg.length-1));
+    // console.log(arg)
+    // console.log(insertSort(arg));
+</script>
+</body>
+</html>
